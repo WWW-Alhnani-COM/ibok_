@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نسيت كلمة المرور - iBOK</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+<div class="container">
+    <header class="header">
+        <div class="logo-text">iBOK اي بوك</div>
+        <div class="service-name">الخدمات المصرفية عبر الإنترنت</div>
+    </header>
+
+    <div class="welcome-banner">
+        لاسترجاع كلمة المرور، الرجاء إدخال بياناتك المسجلة.
+    </div>
+
+    <div class="form-card">
+        <div class="card-title">نسيت كلمة المرور</div>
+        
+        <form id="forgotForm">
+            <div class="input-group">
+                <label for="accountID" class="input-label">رقم الحساب أو البريد الإلكتروني</label>
+                <div class="input-wrapper">
+                    <input type="text" id="accountID" class="form-input" placeholder="أدخل رقم الحساب أو البريد" required>
+                    <span class="input-icon"><i class="fas fa-user"></i></span> 
+                </div>
+                <span class="input-hint">أدخل رقم الحساب المكون من 7 أرقام أو البريد الإلكتروني المسجل</span>
+            </div>
+
+            <button type="submit" class="btn-action">
+                <i class="fas fa-envelope"></i> إرسال رمز الاسترجاع
+            </button>
+        </form>
+        
+        <a href="login.html" class="back-link">العودة إلى تسجيل الدخول</a>
+    </div>
+</div>
+
+<div class="toast-message" id="toast"></div>
+
+<script>
+const forgotForm = document.getElementById('forgotForm');
+const toast = document.getElementById('toast');
+
+function showToast(message, color='#4CAF50') {
+    toast.innerText = message;
+    toast.style.backgroundColor = color; // تم تغيير background إلى backgroundColor
+    toast.style.display = 'block';
+    setTimeout(()=> { toast.style.display = 'none'; }, 3000);
+}
+
+forgotForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const accountID = document.getElementById('accountID').value.trim();
+    if(!accountID){
+        showToast('الرجاء إدخال رقم الحساب أو البريد الإلكتروني', '#D32F2F');
+        return;
+    }
+    // التحقق البسيط من رقم الحساب
+    if (accountID.length === 7 && !isNaN(accountID)) {
+         showToast('تم إرسال رمز استرجاع كلمة المرور إلى هاتفك المسجل.');
+    } else {
+         showToast('تم إرسال رمز استرجاع كلمة المرور إلى بريدك الإلكتروني.');
+    }
+    
+    // التوجيه بعد 2 ثانية (يمكنك تغيير الوجهة لـ otp.html إذا كان رمز الاسترجاع هو OTP)
+    setTimeout(()=>{ window.location.href = 'verification.html'; }, 2000);
+});
+</script>
+
+</body>
+</html>

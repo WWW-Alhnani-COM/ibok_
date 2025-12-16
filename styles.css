@@ -1,0 +1,517 @@
+/* ----------------------------------------------------------------
+   styles.css - ملف التنسيق لوضع البطاقة في المنتصف مع شريط رأس ممتد
+   ---------------------------------------------------------------- */
+
+/* التنسيق الأساسي للجسم والخلفية */
+body {
+    direction: rtl; 
+    font-family: 'Arial', sans-serif; 
+    background-color: #f8f8f8; /* خلفية الصفحة */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* 🧱 الهيكل العام للواجهة */
+.container {
+    width: 100%;
+    /* لا يوجد max-width هنا لضمان امتداد الشريط الأحمر والأصفر */
+    background-color: #ffffff;
+    box-shadow: none; 
+}
+
+/* 🚩 شريط الرأس الأحمر (Header) */
+.header {
+    background-color: #d82329; 
+    padding: 15px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.logo-text {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.service-name {
+    font-size: 14px;
+}
+
+/* ⚠️ شريط الترحيب الأصفر (Yellow Banner) */
+.welcome-banner {
+    background-color: #ffc107; 
+    color: #333;
+    text-align: right;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    border-bottom: 2px solid #ddd;
+}
+
+/* 📝 قسم النموذج (Form Card) - البطاقة التي تريدها في المنتصف */
+.form-card {
+    background-color: white;
+    padding: 30px 20px;
+    margin-top: 20px; /* إضافة هامش علوي لفصل البطاقة عن الشريط الأصفر */
+    border-radius: 8px; /* حواف مستديرة لتبدو كبطاقة */
+    
+    /* 🔑 مفتاح جعلها "مربع في المنتصف" */
+    max-width: 450px; /* تحديد العرض الأقصى للبطاقة */
+    margin-right: auto;
+    margin-left: auto; /* لتوسيط البطاقة أفقياً */
+    
+    /* إضافة ظل لجعلها تبرز كبطاقة */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+}
+
+.card-title {
+    text-align: center;
+    font-size: 22px;
+    color: #d82329; 
+    margin-bottom: 5px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #d82329; 
+    font-weight: bold;
+}
+
+.card-subtitle {
+    text-align: right;
+    font-size: 16px;
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+/* ✏️ حقول الإدخال المشتركة (Inputs) */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555;
+    font-weight: bold;
+}
+
+.form-input {
+    /* عرض الحقول الآن 100% داخل البطاقة المحدودة */
+    width: 100%; 
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    text-align: right;
+    box-sizing: border-box; 
+}
+
+/* 🔑 رابط "نسيت كلمة المرور" */
+.forgot-password-link {
+    display: block;
+    text-align: right;
+    color: #d82329; 
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+
+/* 🔴 زر الإرسال (Submit Button) */
+.submit-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #d82329; 
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #b31c20; 
+}
+
+/* ⏳ تنسيقات خاصة لواجهة OTP */
+.otp-timer {
+    text-align: center;
+    color: #333;
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+/* تنسيق حقل الإدخال لوصف الحقل */
+.input-description {
+    color: #999;
+    font-size: 12px;
+    display: block;
+    text-align: right;
+    margin-top: 5px;
+}
+/* ----------------------------------------------------------------
+   تنسيقات خاصة بواجهة الخيارات التفاعلية
+   ---------------------------------------------------------------- */
+
+.options-container {
+    display: grid;
+    /* عرض شبكي متجاوب */
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); 
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.option-item {
+    /* تطبيق التنسيق على البطاقة الصغيرة */
+    background: #f7f7f7;
+    padding: 15px 10px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: 0.2s;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.option-item:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: #fff;
+}
+
+/* إخفاء التشيك بوكس الأصلي */
+input[type="checkbox"].hidden-checkbox {
+    display: none;
+}
+
+/* تنسيق التشيك بوكس المخصص والمربوط بالعنصر (Label) */
+.custom-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    position: relative;
+    order: -1; /* وضعه في الأعلى */
+    margin-bottom: 5px;
+}
+
+input[type="checkbox"].hidden-checkbox:checked + .custom-checkbox {
+    background: #d82329; /* اللون الأحمر المميز */
+    border-color: #d82329;
+}
+
+input[type="checkbox"].hidden-checkbox:checked + .custom-checkbox::after {
+    content: "✓";
+    position: absolute;
+    top: -3px;
+    left: 4px;
+    font-size: 18px;
+    color: #fff;
+}
+
+.option-icon {
+    font-size: 30px;
+}
+
+.option-text {
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+}
+
+/* تنسيق التوست (الإشعار المؤقت) */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 50%;
+    transform: translateX(50%);
+    background: #28a745;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-size: 1.1em;
+    display: none;
+    z-index: 1000;
+}
+
+/* تنسيق زر الواتساب الثابت */
+.whatsapp-fixed {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #25D366;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    z-index: 1000;
+}
+
+.whatsapp-fixed:hover {
+    background: #1eb854;
+    transform: translateY(-2px);
+}
+/* ----------------------------------------------------------------
+   تنسيقات إضافية لصفحة نسيت كلمة المرور (Forgot Password)
+   ---------------------------------------------------------------- */
+
+/* تصميم زر الإجراء (يحل محل submit-button في هذا السياق) */
+.btn-action {
+    width: 100%;
+    padding: 15px;
+    margin-top: 15px;
+    background-color: #d82329; /* استخدام لون البنك الأساسي */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-action:hover {
+    background-color: #b31c20; 
+    transform: none; /* إزالة الـ transform: translateY(-2px) للحفاظ على التناسق */
+}
+
+/* تنسيق حقل الإدخال مع الأيقونة (Input with Icon) */
+.input-wrapper {
+    position: relative;
+}
+
+/* تعديل الـ form-input ليتناسب مع padding الأيقونة */
+/* نستخدم .form-input الموجود أصلاً في styles.css ولكن نضيف تعديلاً للأيقونة */
+.input-wrapper .form-input {
+    padding-right: 40px; /* مسافة لليسار */
+    padding-left: 10px;
+    /* إزالة الـ border: 2px dashed... والاعتماد على التنسيق الموحد */
+    border: 1px solid #ccc;
+}
+
+.input-icon {
+    position: absolute;
+    right: 10px; /* وضع الأيقونة على اليمين في واجهة RTL */
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    pointer-events: none;
+    color: #999;
+}
+
+.input-hint {
+    font-size: 12px;
+    color: #999;
+    margin-top: 5px;
+    display: block;
+    text-align: right;
+}
+
+/* رابط العودة */
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 1rem;
+    color: #d82329; /* استخدام لون البنك */
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* تنسيق الـ Toast الموحد */
+.toast-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #4CAF50;
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    display: none;
+    z-index: 1000;
+}
+/* تنسيق الـ Toast الموحد */
+.toast-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #4CAF50; /* لون أخضر للنجاح */
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    display: none;
+    z-index: 1000;
+}
+/* ----------------------------------------------------------------
+   تنسيقات عنصر الإجابة غير النشط (Disabled Input)
+   ---------------------------------------------------------------- */
+.form-input:disabled {
+    background-color: #f7f7f7; /* لون رمادي فاتح للخلفية المقفلة */
+    cursor: not-allowed;
+    border-color: #ddd;
+    opacity: 0.8;
+}
+
+/* تنسيق زر الراديو عند التحديد (لضمان اللون الأحمر) */
+.question-item input[type="radio"]:checked {
+    border-color: #d82329; /* لون البنك الأحمر */
+}
+
+.question-item input[type="radio"]:checked::before {
+    background-color: #d82329; /* النقطة الداخلية */
+}
+/* ----------------------------------------------------------------
+   (styles.css) - قسم النافذة المنبثقة (Modal) فقط
+   ---------------------------------------------------------------- */
+
+/* ⛔ تأكد من أن البطاقة الرئيسية في المنتصف أولاً، إذا لم تكن كذلك، أضف هذا الجزء أيضاً: */
+.form-content-wrapper {
+    max-width: 450px; 
+    margin: 20px auto; 
+    padding: 0 10px; 
+}
+
+
+/* ----------------------------------------------------------------
+   ثانياً: تنسيقات النافذة المنبثقة (Modal)
+   ---------------------------------------------------------------- */
+
+.modal {
+    display: none; 
+    position: fixed; /* يظهر فوق كل شيء */
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); 
+    display: flex; /* لضمان التوسيط الأفقي والعمودي */
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.modal-content {
+    background-color: #3c3c3c; /* خلفية داكنة للمودال */
+    width: 95%;
+    max-width: 350px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    max-height: 80vh; /* تحديد أقصى ارتفاع */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: fadeIn 0.3s ease-out; 
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #555;
+    text-align: center;
+}
+
+.questions-list-modal {
+    flex-grow: 1;
+    overflow-y: auto; /* يجعل القائمة قابلة للتمرير */
+    padding: 0 5px; 
+}
+
+.questions-list-modal .question-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 10px;
+    border-bottom: 1px solid #555; 
+    cursor: pointer;
+    font-size: 15px;
+    color: #fff;
+    transition: background-color 0.2s;
+}
+
+.questions-list-modal .question-item:hover {
+    background-color: #4a4a4a; 
+}
+
+/* تنسيق زر الراديو المخصص (checkmark) */
+.questions-list-modal .question-item input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 0; 
+    height: 0;
+    position: absolute;
+}
+
+.questions-list-modal .checkmark {
+    position: relative;
+    height: 20px;
+    width: 20px;
+    border: 2px solid #fff; 
+    border-radius: 50%;
+    margin-left: 15px; 
+    flex-shrink: 0;
+    display: inline-block;
+}
+
+.questions-list-modal .question-item input[type="radio"]:checked + .checkmark {
+    border-color: #d82329; 
+}
+
+.questions-list-modal .question-item input[type="radio"]:checked + .checkmark::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background-color: #d82329; 
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+}
+.modal {
+    /* 👈 مفتاح الحل: تبدأ دائمًا مخفية */
+    display: none; 
+
+    position: fixed; /* يظهر فوق كل شيء */
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); 
+    
+    /* يتم تفعيل الـ flexbox فقط عندما يقوم كود JavaScript بتغيير display من 'none' إلى 'flex' */
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}

